@@ -383,7 +383,7 @@ $subject = isset($_GET['subject']) ? $_GET['subject'] : '';
             </div>
             
             <div class="footer">
-                <p>&copy; <?php echo date('Y'); ?> Pembelajaran Pemrograman Berorientasi Objek | Dibuat oleh [Nama Dosen]</p>
+                <p>&copy; <?php echo date('Y'); ?> Pembelajaran Pemrograman Berorientasi Objek | Dibuat oleh [Syahru Rahmayuda]</p>
             </div>
         </div>
     </div>
