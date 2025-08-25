@@ -341,7 +341,7 @@ $subject = isset($_GET['subject']) ? $_GET['subject'] : '';
                 // Konten berdasarkan halaman yang dipilih
                 switch($page) {
                     case 'home':
-                        include('home.php');
+                        include(__DIR__ . '/content/home.php');
                         break;
                     case 'teori':
                         switch($subject) {
