@@ -241,7 +241,7 @@ $subject = isset($_GET['subject']) ? $_GET['subject'] : '';
                                 <i class="fas fa-book"></i> Teori PBO
                             </a>
                             <div class="dropdown">
-                                <a href="?page=teori&subject=dasar-php" class="dropdown-link <?php echo ($page == 'teori' && $subject == 'dasar-php') ? 'active' : ''; ?>">Materi Dasar PHP</a>
+                                <a href="slideoop.html" class="dropdown-link active">Materi Dasar PHP</a>
                                 <a href="?page=teori&subject=class" class="dropdown-link <?php echo ($page == 'teori' && $subject == 'class') ? 'active' : ''; ?>">Class</a>
                                 <a href="?page=teori&subject=object" class="dropdown-link <?php echo ($page == 'teori' && $subject == 'object') ? 'active' : ''; ?>">Objek</a>
                                 <a href="?page=teori&subject=property-method" class="dropdown-link <?php echo ($page == 'teori' && $subject == 'property-method') ? 'active' : ''; ?>">Property & Method</a>
