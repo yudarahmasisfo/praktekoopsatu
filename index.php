@@ -1,30 +1,3 @@
-<!-- <?php
-// index.php
-$nama = "Peserta Praktik";
-$waktu = date("Y-m-d H:i:s");
-?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Website PHP di Hugging Face</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        .container { max-width: 600px; margin: 0 auto; }
-        .box { background: #f0f8ff; padding: 20px; border-radius: 10px; margin-top: 20px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Selamat Datang di Website Belajar OOP</h1>
-        <p>Halo <strong><?= htmlspecialchars($nama) ?></strong></p>
-        <div class="box">
-            <p>Waktu server: <code><?= $waktu ?></code></p>
-            <p>Dijalankan di <strong>Docker</strong> di Hugging Face Spaces ✅</p>
-        </div>
-    </div>
-</body>
-</html> -->
 <?php
 // Definisikan variabel untuk kontrol menu
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
@@ -52,91 +25,90 @@ $subject = isset($_GET['subject']) ? $_GET['subject'] : '';
             line-height: 1.6;
         }
         
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        .sidebar {
-            width: 280px;
+        .header {
             background-color: #2c3e50;
             color: white;
-            padding: 20px 0;
-            transition: all 0.3s ease;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        .sidebar-header {
-            padding: 0 20px 20px;
-            border-bottom: 1px solid #34495e;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
-        .sidebar-header h1 {
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
             font-size: 1.5rem;
-            margin-bottom: 5px;
+            font-weight: bold;
         }
         
-        .sidebar-header p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        .menu {
+        .nav-menu {
+            display: flex;
             list-style: none;
-            padding: 20px 0;
         }
         
-        .menu-item {
+        .nav-item {
             position: relative;
         }
         
-        .menu-link {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
             color: white;
             text-decoration: none;
             transition: background-color 0.3s;
+            border-radius: 4px;
         }
         
-        .menu-link:hover, .menu-link.active {
+        .nav-link:hover, .nav-link.active {
             background-color: #3498db;
         }
         
-        .menu-link i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-        
-        .submenu {
-            list-style: none;
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
             background-color: #34495e;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 0 0 4px 4px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
         }
         
-        .submenu.open {
-            max-height: 500px;
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
         
-        .submenu-link {
+        .dropdown-link {
             display: block;
-            padding: 10px 20px 10px 50px;
+            padding: 10px 15px;
             color: #ecf0f1;
             text-decoration: none;
             font-size: 0.9rem;
             transition: background-color 0.3s;
         }
         
-        .submenu-link:hover, .submenu-link.active {
+        .dropdown-link:hover, .dropdown-link.active {
             background-color: #2980b9;
         }
         
         .content {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
+            padding: 30px 0;
         }
         
         .content-header {
@@ -206,88 +178,113 @@ $subject = isset($_GET['subject']) ? $_GET['subject'] : '';
         }
         
         .footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
             text-align: center;
             padding: 20px;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            border-top: 1px solid #ddd;
             margin-top: 30px;
         }
         
+        .footer p {
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 768px) {
-            .container {
+            .header-content {
                 flex-direction: column;
             }
             
-            .sidebar {
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
                 width: 100%;
+            }
+            
+            .nav-item {
+                width: 100%;
+            }
+            
+            .dropdown {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                background-color: #2c3e50;
+            }
+            
+            .nav-item:hover .dropdown {
+                display: block;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h1>PBO Online</h1>
-                <p>Pembelajaran Interaktif</p>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">PBO Online</div>
+                <nav>
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="?page=home" class="nav-link <?php echo $page == 'home' ? 'active' : ''; ?>">
+                                <i class="fas fa-home"></i> Beranda
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-book"></i> Teori PBO
+                            </a>
+                            <div class="dropdown">
+                                <a href="?page=teori&subject=dasar-php" class="dropdown-link <?php echo ($page == 'teori' && $subject == 'dasar-php') ? 'active' : ''; ?>">Materi Dasar PHP</a>
+                                <a href="?page=teori&subject=class" class="dropdown-link <?php echo ($page == 'teori' && $subject == 'class') ? 'active' : ''; ?>">Class</a>
+                                <a href="?page=teori&subject=object" class="dropdown-link <?php echo ($page == 'teori' && $subject == 'object') ? 'active' : ''; ?>">Objek</a>
+                                <a href="?page=teori&subject=property-method" class="dropdown-link <?php echo ($page == 'teori' && $subject == 'property-method') ? 'active' : ''; ?>">Property & Method</a>
+                                <a href="?page=teori&subject=encapsulation" class="dropdown-link <?php echo ($page == 'teori' && $subject == 'encapsulation') ? 'active' : ''; ?>">Enkapsulasi</a>
+                            </div>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-laptop-code"></i> Praktek PBO
+                            </a>
+                            <div class="dropdown">
+                                <a href="?page=praktek&subject=implementasi" class="dropdown-link <?php echo ($page == 'praktek' && $subject == 'implementasi') ? 'active' : ''; ?>">Implementasi Class</a>
+                                <a href="?page=praktek&subject=inheritance" class="dropdown-link <?php echo ($page == 'praktek' && $subject == 'inheritance') ? 'active' : ''; ?>">Pewarisan</a>
+                                <a href="?page=praktek&subject=polymorphism" class="dropdown-link <?php echo ($page == 'praktek' && $subject == 'polymorphism') ? 'active' : ''; ?>">Polimorfisme</a>
+                                <a href="?page=praktek&subject=latihan" class="dropdown-link <?php echo ($page == 'praktek' && $subject == 'latihan') ? 'active' : ''; ?>">Latihan Soal</a>
+                            </div>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-database"></i> Database
+                            </a>
+                            <div class="dropdown">
+                                <a href="?page=database&subject=koneksi" class="dropdown-link <?php echo ($page == 'database' && $subject == 'koneksi') ? 'active' : ''; ?>">Koneksi Database</a>
+                                <a href="?page=database&subject=crud" class="dropdown-link <?php echo ($page == 'database' && $subject == 'crud') ? 'active' : ''; ?>">CRUD dengan OOP</a>
+                                <a href="?page=database&subject=orm" class="dropdown-link <?php echo ($page == 'database' && $subject == 'orm') ? 'active' : ''; ?>">ORM Dasar</a>
+                            </div>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="?page=about" class="nav-link <?php echo $page == 'about' ? 'active' : ''; ?>">
+                                <i class="fas fa-info-circle"></i> Tentang
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            
-            <ul class="menu">
-                <li class="menu-item">
-                    <a href="?page=home" class="menu-link <?php echo $page == 'home' ? 'active' : ''; ?>">
-                        <i class="fas fa-home"></i> Beranda
-                    </a>
-                </li>
-                
-                <li class="menu-item">
-                    <a href="#" class="menu-link" id="teori-pbo">
-                        <i class="fas fa-book"></i> Teori PBO
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
-                    </a>
-                    <ul class="submenu" id="submenu-teori">
-                        <li><a href="?page=teori&subject=dasar-php" class="submenu-link <?php echo ($page == 'teori' && $subject == 'dasar-php') ? 'active' : ''; ?>">Materi Dasar PHP</a></li>
-                        <li><a href="?page=teori&subject=class" class="submenu-link <?php echo ($page == 'teori' && $subject == 'class') ? 'active' : ''; ?>">Class</a></li>
-                        <li><a href="?page=teori&subject=object" class="submenu-link <?php echo ($page == 'teori' && $subject == 'object') ? 'active' : ''; ?>">Objek</a></li>
-                        <li><a href="?page=teori&subject=property-method" class="submenu-link <?php echo ($page == 'teori' && $subject == 'property-method') ? 'active' : ''; ?>">Property & Method</a></li>
-                        <li><a href="?page=teori&subject=encapsulation" class="submenu-link <?php echo ($page == 'teori' && $subject == 'encapsulation') ? 'active' : ''; ?>">Enkapsulasi</a></li>
-                    </ul>
-                </li>
-                
-                <li class="menu-item">
-                    <a href="#" class="menu-link" id="praktek-pbo">
-                        <i class="fas fa-laptop-code"></i> Praktek PBO
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
-                    </a>
-                    <ul class="submenu" id="submenu-praktek">
-                        <li><a href="?page=praktek&subject=implementasi" class="submenu-link <?php echo ($page == 'praktek' && $subject == 'implementasi') ? 'active' : ''; ?>">Implementasi Class</a></li>
-                        <li><a href="?page=praktek&subject=inheritance" class="submenu-link <?php echo ($page == 'praktek' && $subject == 'inheritance') ? 'active' : ''; ?>">Pewarisan</a></li>
-                        <li><a href="?page=praktek&subject=polymorphism" class="submenu-link <?php echo ($page == 'praktek' && $subject == 'polymorphism') ? 'active' : ''; ?>">Polimorfisme</a></li>
-                        <li><a href="?page=praktek&subject=latihan" class="submenu-link <?php echo ($page == 'praktek' && $subject == 'latihan') ? 'active' : ''; ?>">Latihan Soal</a></li>
-                    </ul>
-                </li>
-                
-                <li class="menu-item">
-                    <a href="#" class="menu-link" id="database">
-                        <i class="fas fa-database"></i> Database
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
-                    </a>
-                    <ul class="submenu" id="submenu-database">
-                        <li><a href="?page=database&subject=koneksi" class="submenu-link <?php echo ($page == 'database' && $subject == 'koneksi') ? 'active' : ''; ?>">Koneksi Database</a></li>
-                        <li><a href="?page=database&subject=crud" class="submenu-link <?php echo ($page == 'database' && $subject == 'crud') ? 'active' : ''; ?>">CRUD dengan OOP</a></li>
-                        <li><a href="?page=database&subject=orm" class="submenu-link <?php echo ($page == 'database' && $subject == 'orm') ? 'active' : ''; ?>">ORM Dasar</a></li>
-                    </ul>
-                </li>
-                
-                <li class="menu-item">
-                    <a href="?page=about" class="menu-link <?php echo $page == 'about' ? 'active' : ''; ?>">
-                        <i class="fas fa-info-circle"></i> Tentang
-                    </a>
-                </li>
-            </ul>
         </div>
-        
-        <div class="content">
+    </header>
+    
+    <div class="content">
+        <div class="container">
             <div class="content-header">
                 <h1>
                     <?php
@@ -381,51 +378,13 @@ $subject = isset($_GET['subject']) ? $_GET['subject'] : '';
                 }
                 ?>
             </div>
-            
-            <div class="footer">
-                <p>&copy; <?php echo date('Y'); ?> Pembelajaran Pemrograman Berorientasi Objek | Dibuat oleh [Syahru Rahmayuda]</p>
-            </div>
         </div>
     </div>
     
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Menu toggle functionality
-            const menuLinks = document.querySelectorAll('.menu-link');
-            
-            menuLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // Skip if it's a direct link
-                    if (this.getAttribute('href') !== '#') return;
-                    
-                    e.preventDefault();
-                    
-                    const submenu = this.nextElementSibling;
-                    const icon = this.querySelector('.fa-chevron-down');
-                    
-                    // Toggle submenu
-                    submenu.classList.toggle('open');
-                    
-                    // Rotate icon
-                    if (submenu.classList.contains('open')) {
-                        icon.style.transform = 'rotate(180deg)';
-                    } else {
-                        icon.style.transform = 'rotate(0)';
-                    }
-                });
-            });
-            
-            // Open submenu if active
-            const activeSubmenuLinks = document.querySelectorAll('.submenu-link.active');
-            activeSubmenuLinks.forEach(link => {
-                const submenu = link.parentElement;
-                const menuLink = submenu.previousElementSibling;
-                const icon = menuLink.querySelector('.fa-chevron-down');
-                
-                submenu.classList.add('open');
-                icon.style.transform = 'rotate(180deg)';
-            });
-        });
-    </script>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <?php echo date('Y'); ?> Pembelajaran Pemrograman Berorientasi Objek | Dibuat oleh [Nama Dosen]</p>
+        </div>
+    </footer>
 </body>
 </html>
